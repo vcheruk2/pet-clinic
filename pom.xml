@@ -14,7 +14,7 @@
     </parent>
     <groupId>com.ravi</groupId>
     <artifactId>pet-clinic</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>pet-clinic</name>
     <description>Pet Clinic Project</description>
 
@@ -52,7 +52,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.4.2</version>
+                <version>2.5.3</version>
                 <configuration>
                     <goals>install</goals>
                 </configuration>
