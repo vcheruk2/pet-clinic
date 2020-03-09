@@ -89,4 +89,8 @@
         </plugins>
     </build>
 
+    <scm>
+        <developerConnection>scm:git:git@github.com:vcheruk2/pet-clinic.git</developerConnection>
+    </scm>
+
 </project>
