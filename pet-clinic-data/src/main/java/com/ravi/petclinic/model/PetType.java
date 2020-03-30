@@ -11,11 +11,11 @@ public class PetType extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    public String getType() {
+    public String getName() {
         return name;
     }
 
-    public void setType(String type) {
-        this.name = type;
+    public void setName(String name) {
+        this.name = name;
     }
 }
