@@ -1,6 +1,7 @@
 package com.ravi.petclinic.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ public class Vet extends Person {
     @JoinTable(name = "vet_specialities",
         joinColumns = @JoinColumn(name = "vet_id"),
         inverseJoinColumns = @JoinColumn(name = "speicality_id"))
-    private Set<Specialty> specialties;
+    private Set<Specialty> specialties = new HashSet<>();
 
     public Set<Specialty> getSpecialties() {
         return specialties;
