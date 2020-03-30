@@ -1,7 +1,7 @@
 package com.ravi.petclinic.service.map;
 
 import com.ravi.petclinic.model.Specialty;
-import com.ravi.petclinic.service.SpecialtiesService;
+import com.ravi.petclinic.service.SpecialtyService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -9,7 +9,7 @@ import java.util.Set;
 /* Created by: Venkata Ravichandra Cherukuri
    Created on: 3/29/2020 */
 @Service
-public class SpecialtyServiceMap extends AbstractMapService<Specialty, Long> implements SpecialtiesService {
+public class SpecialtyServiceMap extends AbstractMapService<Specialty, Long> implements SpecialtyService {
     @Override
     public Specialty findById(Long id) {
         return super.findById(id);

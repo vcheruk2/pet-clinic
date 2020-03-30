@@ -1,11 +1,9 @@
 package com.ravi.petclinic.bootstrap;
 
-import com.ravi.petclinic.model.Owner;
-import com.ravi.petclinic.model.Pet;
-import com.ravi.petclinic.model.PetType;
-import com.ravi.petclinic.model.Vet;
+import com.ravi.petclinic.model.*;
 import com.ravi.petclinic.service.OwnerService;
 import com.ravi.petclinic.service.PetTypeService;
+import com.ravi.petclinic.service.SpecialtyService;
 import com.ravi.petclinic.service.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,16 +16,25 @@ public class DataLoader implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
     private final PetTypeService petTypeService;
+    private final SpecialtyService specialtyService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtiesService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
+        this.specialtyService = specialtiesService;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
+        int count = petTypeService.findAll().size();
+
+        if(count == 0)
+            loadData();
+    }
+
+    private void loadData() {
         PetType dog = new PetType();
         dog.setName("Doggy");
         PetType savedDogPetType = petTypeService.save(dog);
@@ -72,22 +79,36 @@ public class DataLoader implements CommandLineRunner {
 
         System.out.println("Loaded all owners..");
 
+        Specialty radiology = new Specialty();
+        radiology.setDescription("Radiology");
+        Specialty savedRadiology = specialtyService.save(radiology);
+
+        Specialty surgery = new Specialty();
+        surgery.setDescription("Surgery");
+        Specialty savedSurgery = specialtyService.save(surgery);
+
+        Specialty dentistry = new Specialty();
+        surgery.setDescription("Dentistry");
+        Specialty savedDentistry = specialtyService.save(dentistry);
+
         Vet vet1 = new Vet();
         vet1.setFirstName("Gregg");
         vet1.setLastName("House");
+        vet1.getSpecialties().add(savedRadiology);
         vetService.save(vet1);
 
         Vet vet2 = new Vet();
         vet2.setFirstName("Alison");
         vet2.setLastName("Cameron");
+        vet2.getSpecialties().add(savedSurgery);
         vetService.save(vet2);
 
         Vet vet3 = new Vet();
         vet3.setFirstName("Sasya");
         vet3.setLastName("Cherukuri");
+        vet3.getSpecialties().add(savedRadiology);
+        vet3.getSpecialties().add(savedDentistry);
         vetService.save(vet3);
-
-
 
         System.out.println("Loaded all vets..");
     }
