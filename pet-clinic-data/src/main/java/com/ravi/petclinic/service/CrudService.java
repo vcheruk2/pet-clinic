@@ -2,7 +2,7 @@ package com.ravi.petclinic.service;
 
 import java.util.Set;
 
-public interface CommonService<T, ID> {
+public interface CrudService<T, ID> {
     T findById(ID id);
 
     T save(T object);
