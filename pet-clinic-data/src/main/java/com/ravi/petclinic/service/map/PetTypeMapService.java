@@ -9,7 +9,7 @@ import java.util.Set;
 /* Created by: Venkata Ravichandra Cherukuri
    Created on: 3/29/2020 */
 @Service
-public class PetTypeServiceMap extends AbstractMapService<PetType, Long> implements PetTypeService {
+public class PetTypeMapService extends AbstractMapService<PetType, Long> implements PetTypeService {
 
     @Override
     public PetType findById(Long id) {

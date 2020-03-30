@@ -9,7 +9,7 @@ import java.util.Set;
 /* Created by: Venkata Ravichandra Cherukuri
    Created on: 3/29/2020 */
 @Service
-public class SpecialtyServiceMap extends AbstractMapService<Specialty, Long> implements SpecialtyService {
+public class SpecialtyMapService extends AbstractMapService<Specialty, Long> implements SpecialtyService {
     @Override
     public Specialty findById(Long id) {
         return super.findById(id);
