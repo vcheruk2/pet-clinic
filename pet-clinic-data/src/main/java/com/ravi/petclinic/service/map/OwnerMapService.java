@@ -5,6 +5,7 @@ import com.ravi.petclinic.model.Pet;
 import com.ravi.petclinic.service.OwnerService;
 import com.ravi.petclinic.service.PetService;
 import com.ravi.petclinic.service.PetTypeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Service
 @Profile({"default", "map"})
+@Slf4j
 public class OwnerMapService extends AbstractMapService<Owner, Long> implements OwnerService {
 
     private final PetTypeService petTypeService;
@@ -70,6 +72,13 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
 
     @Override
     public Owner findByLastName(String lastName) {
-        return null;
+
+        log.debug("Finding by last name ", lastName);
+
+        return this.findAll()
+                .stream()
+                .filter(owner -> owner.getLastName().equalsIgnoreCase(lastName))
+                .findFirst()
+                .orElse(null);
     }
 }
