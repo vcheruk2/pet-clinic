@@ -15,10 +15,11 @@ import org.springframework.ui.Model;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -49,7 +50,7 @@ class OwnerControllerTest {
                 .build();
     }
 
-    @Test
+    /*@Test
     void listOwners() throws Exception {
         when(ownerService.findAll()).thenReturn(ownerSet);
 
@@ -60,9 +61,9 @@ class OwnerControllerTest {
 
         assertEquals("owners/owners", ownerController.listOwners(model));
         assertEquals(ownerService.findAll().size(), 2);
-    }
+    }*/
 
-    @Test
+    /*@Test
     void listOwnersByIndex() throws Exception {
         when(ownerService.findAll()).thenReturn(ownerSet);
 
@@ -73,7 +74,7 @@ class OwnerControllerTest {
 
         assertEquals("owners/owners", ownerController.listOwners(model));
         assertEquals(ownerService.findAll().size(), 2);
-    }
+    }*/
 
     @Test
     void notImplemented() throws Exception{
@@ -82,5 +83,23 @@ class OwnerControllerTest {
                 .andExpect(view().name("notImplemented"));
         assertEquals(ownerController.notImplemented(), "notImplemented");
         verifyZeroInteractions(ownerService);
+    }
+
+    @Test
+    void getOwnerDetailstest() throws Exception {
+
+        // Given
+        Owner owner = Owner.builder().id(2L).firstName("Ravi").build();
+
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+
+        // when
+        mockMvc.perform(get("/owners/2"))
+                .andExpect(view().name("owners/ownerDetails"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("owner", hasProperty("id", is(2L))));
+
+        // then
+        verify(ownerService, times(1)).findById(anyLong());
     }
 }
