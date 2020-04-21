@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Profile({"default", "map"})
@@ -80,5 +82,16 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
                 .filter(owner -> owner.getLastName().equalsIgnoreCase(lastName))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public List<Owner> findAllByLastNameLike(String lastNameLike) {
+
+        log.debug("Finding all by last name like ", lastNameLike);
+
+        return this.findAll()
+                .stream()
+                .filter(owner -> owner.getLastName().toLowerCase().contains(lastNameLike.toLowerCase()))
+                .collect(Collectors.toList());
     }
 }

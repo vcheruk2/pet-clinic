@@ -97,4 +97,15 @@ class OwnerMapServiceTest {
 
         assertEquals(ownerMapServiceNoMock.findAll().size(), 0);
     }
+
+    @Test
+    void findByLastNameLike() {
+        // Given
+        ownerMapServiceNoMock.save(Owner.builder().id(3L).lastName("abcdefgh").build());
+        ownerMapServiceNoMock.save(Owner.builder().id(4L).lastName("ABC").build());
+        ownerMapServiceNoMock.save(Owner.builder().id(5L).lastName("xyz").build());
+
+        // then
+        assertEquals(2, ownerMapServiceNoMock.findAllByLastNameLike("ABC").size());
+    }
 }
