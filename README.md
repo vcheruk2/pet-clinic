@@ -72,4 +72,4 @@ A multi-module end to end **Pet Clinic Web Application using Spring MVC**
 
 6. Clone the repository and import it to IntelliJ
 
-7. Run the Recipe Spring Application through IntelliJ.
+7. Run the Pet Clinic Spring Application through IntelliJ.
