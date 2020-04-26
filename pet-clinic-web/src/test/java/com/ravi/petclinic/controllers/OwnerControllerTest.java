@@ -84,6 +84,23 @@ class OwnerControllerTest {
     }
 
     @Test
+    void findOwnerByLastNameNull() throws Exception {
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(Arrays.asList(Owner.builder().id(1L).build(),
+                                        Owner.builder().id(2L).build(), Owner.builder().id(3L).build()));
+
+        // When
+        mockMvc.perform(get("/owners")
+                .param("lastName", ""))
+                .andExpect(view().name("owners/ownersList"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("selections"))
+                .andExpect(model().attribute("selections", hasSize(3)));
+
+        // then
+        verify(ownerService, times(1)).findAllByLastNameLike(anyString());
+    }
+
+    @Test
     void getOwnerDetailstest() throws Exception {
 
         // Given
