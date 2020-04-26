@@ -8,6 +8,7 @@ import com.ravi.petclinic.service.PetService;
 import com.ravi.petclinic.service.PetTypeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -50,23 +51,51 @@ public class PetController {
     }
 
     @GetMapping("/pets/new")
-    public String initNewPetForm(@PathVariable Long ownerId, Model model){
+    public String initNewPetForm(Owner owner, Model model){
         Pet pet = new Pet();
         // TODO: Validate to see if the owner is available for a given id
-        pet.setOwner(ownerService.findById(ownerId));
+        pet.setOwner(owner);
         model.addAttribute("pet", pet);
         return PETS_CREATE_OR_UPDATE_PET_FORM;
     }
 
     @PostMapping("/pets/new")
-    public String processNewPetForm(@Valid Pet pet, BindingResult result, @PathVariable Long ownerId, Model model){
-        if (result.hasErrors())
+    public String processNewPetForm(Owner owner, @Valid Pet pet, BindingResult result, Model model){
+        if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+            result.rejectValue("name", "duplicate", "already exists");
+        }
+
+        owner.getPets().add(pet);
+        if (result.hasErrors()){
+            model.addAttribute("pet", pet);
             return PETS_CREATE_OR_UPDATE_PET_FORM;
+        }
         else {
             // TODO: Validate to see if owner is null
-            Owner owner = ownerService.findById(ownerId);
+            Pet savedPet = petService.save(pet);
+            owner.getPets().add(savedPet);
+            model.addAttribute(owner);
+            return "redirect:/owners/"+owner.getId();
+        }
+    }
+
+    @GetMapping("/pets/{petId}/edit")
+    public String initUpdatePetForm(@PathVariable Long petId, Model model){
+        model.addAttribute("pet", petService.findById(petId));
+        return PETS_CREATE_OR_UPDATE_PET_FORM;
+    }
+
+    @PostMapping("/pets/{petId}/edit")
+    public String processUpdatePetForm(@Valid Pet pet, BindingResult result, Owner owner, Model model){
+        if (result.hasErrors()){
+            pet.setOwner(owner);
+            model.addAttribute("pet", pet);
+            return PETS_CREATE_OR_UPDATE_PET_FORM;
+        }
+        else{
             owner.getPets().add(pet);
-            return "/owners/" + owner.getId();
+            petService.save(pet);
+            return "redirect:/owners/" + owner.getId();
         }
     }
 }
